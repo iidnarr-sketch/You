@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RyanDev. — Script Hub</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Kanit:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red: #e63946;
+    --red-dim: #c1121f;
+    --dark: #0a0a0a;
+    --dark2: #111111;
+    --dark3: #1a1a1a;
+    --card: #161616;
+    --border: #2a2a2a;
+    --text: #e0e0e0;
+    --muted: #666;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; scroll-behavior:smooth; }
+  body { background: var(--dark); color: var(--text); font-family: 'Kanit', sans-serif; overflow-x: hidden; }
+  body.no-scroll { overflow: hidden; }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width:6px; }
+  ::-webkit-scrollbar-track { background: var(--dark2); }
+  ::-webkit-scrollbar-thumb { background: var(--red); border-radius:3px; }
+
+  /* NAV */
+  nav { position:fixed; top:0; left:0; right:0; z-index:100; background: rgba(10,10,10,0.95); backdrop-filter:blur(12px); border-bottom:1px solid var(--border); }
+  .nav-inner { max-width:1200px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; padding:0 24px; height:64px; }
+  .logo { font-family:'Space Mono',monospace; font-size:1.5rem; font-weight:700; color:var(--red); letter-spacing:-1px; }
+  .logo span { color: var(--text); }
+  .nav-links { display:flex; gap:32px; }
+  .nav-links a { font-size:0.85rem; font-weight:600; color:var(--muted); text-decoration:none; letter-spacing:1px; text-transform:uppercase; transition:color .2s; }
+  .nav-links a:hover { color: var(--red); }
+  .admin-btn { font-family:'Space Mono',monospace; font-size:0.75rem; background:transparent; border:1px solid var(--red); color:var(--red); padding:6px 16px; cursor:pointer; transition:.2s; }
+  .admin-btn:hover { background:var(--red); color:#fff; }
+  .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; }
+  .hamburger span { width:22px; height:2px; background:var(--text); transition:.3s; }
+
+  /* HERO */
+  .hero { min-height:100vh; display:flex; align-items:center; padding:80px 24px 40px; position:relative; overflow:hidden; }
+  .hero::before { content:''; position:absolute; top:-200px; right:-200px; width:600px; height:600px; background: radial-gradient(circle, rgba(230,57,70,0.15) 0%, transparent 70%); pointer-events:none; }
+  .hero::after { content:''; position:absolute; bottom:-100px; left:-100px; width:400px; height:400px; background: radial-gradient(circle, rgba(230,57,70,0.08) 0%, transparent 70%); pointer-events:none; }
+  .hero-inner { max-width:1200px; margin:0 auto; width:100%; display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center; }
+  .hero-tag { font-family:'Space Mono',monospace; font-size:0.75rem; color:var(--red); letter-spacing:3px; text-transform:uppercase; margin-bottom:16px; }
+  .hero-title { font-size:clamp(2.5rem,5vw,4.5rem); font-weight:900; line-height:1.05; color:#fff; }
+  .hero-title .accent { color:var(--red); display:block; }
+  .hero-desc { margin-top:20px; color:var(--muted); font-size:1rem; line-height:1.8; font-weight:300; }
+  .hero-stats { display:flex; gap:24px; margin-top:36px; }
+  .stat-box { background:var(--card); border:1px solid var(--border); padding:20px 28px; text-align:center; transition:.3s; cursor:default; }
+  .stat-box:hover { border-color:var(--red); }
+  .stat-num { font-family:'Space Mono',monospace; font-size:2rem; font-weight:700; color:var(--red); }
+  .stat-label { font-size:0.75rem; color:var(--muted); font-weight:300; margin-top:4px; letter-spacing:1px; }
+  .hero-btns { display:flex; gap:16px; margin-top:32px; flex-wrap:wrap; }
+  .btn-primary { background:var(--red); color:#fff; padding:14px 32px; font-family:'Kanit',sans-serif; font-size:0.95rem; font-weight:600; border:none; cursor:pointer; transition:.2s; text-decoration:none; display:inline-flex; align-items:center; gap:8px; }
+  .btn-primary:hover { background:var(--red-dim); }
+  .btn-outline { background:transparent; color:var(--text); padding:14px 32px; font-family:'Kanit',sans-serif; font-size:0.95rem; font-weight:600; border:1px solid var(--border); cursor:pointer; transition:.2s; text-decoration:none; }
+  .btn-outline:hover { border-color:var(--text); }
+  .hero-visual { position:relative; }
+  .hero-card { background:var(--card); border:1px solid var(--border); padding:0; overflow:hidden; position:relative; }
+  .hero-card-header { background:var(--dark3); padding:12px 16px; display:flex; align-items:center; gap:8px; border-bottom:1px solid var(--border); }
+  .dot { width:10px; height:10px; border-radius:50%; }
+  .dot-r { background:#e63946; }
+  .dot-y { background:#f4a261; }
+  .dot-g { background:#2a9d8f; }
+  .hero-card-title { font-family:'Space Mono',monospace; font-size:0.7rem; color:var(--muted); margin-left:8px; }
+  .hero-card-body { padding:24px; }
+  .code-line { font-family:'Space Mono',monospace; font-size:0.8rem; line-height:2; }
+  .c-red { color:var(--red); }
+  .c-yellow { color:#f4a261; }
+  .c-green { color:#2a9d8f; }
+  .c-muted { color:var(--muted); }
+  .c-white { color:#e0e0e0; }
+  .channel-links { margin-top:24px; display:flex; flex-direction:column; gap:10px; }
+  .channel-link { display:flex; align-items:center; gap:12px; background:var(--dark3); border:1px solid var(--border); padding:12px 16px; text-decoration:none; transition:.2s; }
+  .channel-link:hover { border-color:var(--red); background:rgba(230,57,70,0.05); }
+  .channel-icon { width:36px; height:36px; display:flex; align-items:center; justify-content:center; font-size:1.1rem; }
+  .channel-info { flex:1; }
+  .channel-name { font-size:0.85rem; font-weight:600; color:var(--text); }
+  .channel-subs { font-size:0.7rem; color:var(--muted); font-family:'Space Mono',monospace; }
+  .channel-arrow { color:var(--red); font-size:0.9rem; }
+
+  /* SECTIONS */
+  section { padding:80px 24px; }
+  .section-inner { max-width:1200px; margin:0 auto; }
+  .section-header { margin-bottom:48px; }
+  .section-tag { font-family:'Space Mono',monospace; font-size:0.7rem; color:var(--red); letter-spacing:3px; text-transform:uppercase; margin-bottom:8px; }
+  .section-title { font-size:2.2rem; font-weight:900; color:#fff; }
+  .section-line { width:48px; height:3px; background:var(--red); margin-top:12px; }
+
+  /* CATEGORIES */
+  .cat-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:16px; margin-bottom:40px; }
+  .cat-card { background:var(--card); border:1px solid var(--border); padding:24px; cursor:pointer; transition:.3s; position:relative; overflow:hidden; }
+  .cat-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:var(--red); transform:scaleX(0); transition:.3s; }
+  .cat-card:hover::before { transform:scaleX(1); }
+  .cat-card:hover { border-color:#333; background:#1c1c1c; }
+  .cat-card.active { border-color:var(--red); background:rgba(230,57,70,0.05); }
+  .cat-card.active::before { transform:scaleX(1); }
+  .cat-icon { font-size:1.8rem; margin-bottom:12px; }
+  .cat-name { font-size:1rem; font-weight:700; color:#fff; }
+  .cat-count { font-family:'Space Mono',monospace; font-size:0.75rem; color:var(--red); margin-top:4px; }
+
+  /* SCRIPT GRID */
+  .script-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:20px; }
+  .script-card { background:var(--card); border:1px solid var(--border); transition:.3s; cursor:pointer; }
+  .script-card:hover { border-color:var(--red); transform:translateY(-2px); }
+  .script-card-header { padding:20px 20px 12px; display:flex; justify-content:space-between; align-items:flex-start; }
+  .script-badge { font-family:'Space Mono',monospace; font-size:0.65rem; padding:3px 8px; border:1px solid; letter-spacing:1px; }
+  .badge-free { border-color:#2a9d8f; color:#2a9d8f; }
+  .badge-hot { border-color:var(--red); color:var(--red); }
+  .badge-new { border-color:#f4a261; color:#f4a261; }
+  .script-card-body { padding:0 20px 20px; }
+  .script-name { font-size:1.05rem; font-weight:700; color:#fff; margin-bottom:6px; }
+  .script-desc { font-size:0.82rem; color:var(--muted); line-height:1.6; font-weight:300; }
+  .script-footer { padding:12px 20px; border-top:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; }
+  .script-lang { font-family:'Space Mono',monospace; font-size:0.7rem; color:var(--muted); }
+  .script-views { font-family:'Space Mono',monospace; font-size:0.7rem; color:var(--red); }
+
+  /* MODAL */
+  .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.85); backdrop-filter:blur(4px); z-index:1000; display:none; align-items:center; justify-content:center; padding:20px; }
+  .modal-overlay.open { display:flex; }
+  .modal { background:var(--dark2); border:1px solid var(--border); width:100%; max-width:800px; max-height:90vh; overflow-y:auto; position:relative; }
+  .modal-header { padding:24px 28px 20px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; position:sticky; top:0; background:var(--dark2); z-index:1; }
+  .modal-title { font-size:1.3rem; font-weight:700; color:#fff; }
+  .modal-close { background:none; border:none; color:var(--muted); font-size:1.5rem; cursor:pointer; transition:.2s; line-height:1; }
+  .modal-close:hover { color:var(--red); }
+  .modal-body { padding:28px; }
+  .code-block { background:var(--dark3); border:1px solid var(--border); padding:20px; font-family:'Space Mono',monospace; font-size:0.8rem; line-height:1.8; color:#ccc; overflow-x:auto; position:relative; white-space:pre-wrap; word-break:break-word; margin:16px 0; }
+  .copy-btn { position:absolute; top:12px; right:12px; background:var(--red); color:#fff; border:none; padding:6px 14px; font-family:'Space Mono',monospace; font-size:0.7rem; cursor:pointer; transition:.2s; }
+  .copy-btn:hover { background:var(--red-dim); }
+  .tag-list { display:flex; gap:8px; flex-wrap:wrap; margin-top:12px; }
+  .tag { font-family:'Space Mono',monospace; font-size:0.65rem; padding:3px 10px; border:1px solid var(--border); color:var(--muted); }
+
+  /* ADMIN MODAL */
+  .admin-modal { max-width:600px; }
+  .admin-section { margin-bottom:28px; }
+  .admin-section-title { font-size:0.75rem; letter-spacing:2px; text-transform:uppercase; color:var(--red); font-family:'Space Mono',monospace; margin-bottom:16px; border-bottom:1px solid var(--border); padding-bottom:8px; }
+  .form-group { margin-bottom:14px; }
+  .form-label { font-size:0.8rem; color:var(--muted); font-family:'Space Mono',monospace; margin-bottom:6px; display:block; }
+  .form-input, .form-textarea, .form-select { width:100%; background:var(--dark3); border:1px solid var(--border); color:var(--text); padding:10px 14px; font-family:'Space Mono',monospace; font-size:0.8rem; outline:none; transition:.2s; }
+  .form-input:focus, .form-textarea:focus, .form-select:focus { border-color:var(--red); }
+  .form-textarea { min-height:120px; resize:vertical; }
+  .form-select option { background:var(--dark3); }
+  .form-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .btn-danger { background:transparent; border:1px solid #c1121f; color:#c1121f; padding:8px 18px; font-family:'Space Mono',monospace; font-size:0.75rem; cursor:pointer; transition:.2s; }
+  .btn-danger:hover { background:#c1121f; color:#fff; }
+  .btn-success { background:var(--red); color:#fff; padding:10px 24px; font-family:'Space Mono',monospace; font-size:0.75rem; cursor:pointer; border:none; transition:.2s; }
+  .btn-success:hover { background:var(--red-dim); }
+  .script-list-admin { display:flex; flex-direction:column; gap:8px; max-height:220px; overflow-y:auto; }
+  .script-list-item { background:var(--dark3); border:1px solid var(--border); padding:10px 14px; display:flex; justify-content:space-between; align-items:center; }
+  .script-list-item-name { font-size:0.82rem; color:var(--text); }
+  .script-list-actions { display:flex; gap:8px; }
+  .icon-btn { background:none; border:none; cursor:pointer; font-size:0.9rem; padding:2px 6px; transition:.2s; }
+  .icon-btn.edit { color:#f4a261; }
+  .icon-btn.del { color:var(--red); }
+  .icon-btn:hover { opacity:.7; }
+  .admin-lock { display:flex; flex-direction:column; align-items:center; justify-content:center; padding:40px; text-align:center; }
+  .lock-icon { font-size:3rem; margin-bottom:16px; }
+  .lock-title { font-size:1.2rem; font-weight:700; color:#fff; margin-bottom:8px; }
+  .lock-desc { font-size:0.82rem; color:var(--muted); margin-bottom:24px; }
+  .pin-inputs { display:flex; gap:12px; justify-content:center; margin-bottom:20px; }
+  .pin-input { width:48px; height:56px; text-align:center; font-size:1.5rem; font-family:'Space Mono',monospace; background:var(--dark3); border:1px solid var(--border); color:#fff; outline:none; transition:.2s; }
+  .pin-input:focus { border-color:var(--red); }
+  .pin-error { color:var(--red); font-size:0.8rem; font-family:'Space Mono',monospace; min-height:20px; text-align:center; margin-bottom:8px; }
+  .toast { position:fixed; bottom:24px; right:24px; background:var(--card); border:1px solid var(--red); padding:14px 20px; font-family:'Space Mono',monospace; font-size:0.8rem; color:var(--text); z-index:9999; transform:translateY(80px); opacity:0; transition:.3s; pointer-events:none; }
+  .toast.show { transform:translateY(0); opacity:1; }
+
+  /* MOBILE */
+  @media(max-width:768px) {
+    .nav-links { display:none; }
+    .hamburger { display:flex; }
+    .hero-inner { grid-template-columns:1fr; }
+    .hero-visual { display:none; }
+    .hero-stats { flex-wrap:wrap; }
+    .stat-box { flex:1; min-width:100px; }
+    .form-row { grid-template-columns:1fr; }
+  }
+  .mobile-menu { display:none; position:fixed; top:64px; left:0; right:0; background:var(--dark2); border-bottom:1px solid var(--border); z-index:99; padding:20px 24px; flex-direction:column; gap:16px; }
+  .mobile-menu.open { display:flex; }
+  .mobile-menu a { font-size:1rem; font-weight:600; color:var(--muted); text-decoration:none; letter-spacing:1px; text-transform:uppercase; padding:8px 0; border-bottom:1px solid var(--border); }
+
+  /* GLITCH */
+  @keyframes glitch { 0%,100%{text-shadow:none} 20%{text-shadow:-2px 0 var(--red)} 40%{text-shadow:2px 0 #2a9d8f} 60%{text-shadow:-1px 0 var(--red)} }
+  .glitch:hover { animation:glitch .4s; }
+
+  /* FADE IN */
+  @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+  .fade-up { animation:fadeUp .6s ease forwards; }
+  .fade-up-d1 { animation-delay:.1s; opacity:0; }
+  .fade-up-d2 { animation-delay:.2s; opacity:0; }
+  .fade-up-d3 { animation-delay:.3s; opacity:0; }
+
+  /* BLINK */
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+  .cursor { display:inline-block; width:2px; height:1em; background:var(--red); vertical-align:middle; margin-left:2px; animation:blink 1s infinite; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <div class="logo glitch">Ryan<span>.</span></div>
+    <div class="nav-links">
+      <a href="#home">Home</a>
+      <a href="#channels">Channel</a>
+      <a href="#scripts">Scripts</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <div style="display:flex;gap:12px;align-items:center;">
+      <button class="admin-btn" onclick="openAdmin()">⚙ Admin</button>
+      <div class="hamburger" onclick="toggleMenu()">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#home" onclick="toggleMenu()">Home</a>
+  <a href="#channels" onclick="toggleMenu()">Channel</a>
+  <a href="#scripts" onclick="toggleMenu()">Scripts</a>
+  <a href="#contact" onclick="toggleMenu()">Contact</a>
+</div>
+
+<!-- HERO -->
+<section id="home" class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-tag fade-up">// Script Hub & Dev Channel</div>
+      <h1 class="hero-title fade-up fade-up-d1">
+        Hello I'm <span class="accent" id="typedName">Ryan<span class="cursor"></span></span>
+      </h1>
+      <p class="hero-desc fade-up fade-up-d2">
+        แหล่งรวม Scripts & Tools สำหรับนักพัฒนา<br>
+        ฟรี อัพเดตสม่ำเสมอ พร้อมใช้งานได้เลย
+      </p>
+      <div class="hero-stats fade-up fade-up-d2">
+        <div class="stat-box">
+          <div class="stat-num" id="totalScripts">0</div>
+          <div class="stat-label">Scripts</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">4</div>
+          <div class="stat-label">Categories</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">100%</div>
+          <div class="stat-label">Free</div>
+        </div>
+      </div>
+      <div class="hero-btns fade-up fade-up-d3">
+        <a href="#scripts" class="btn-primary">ดู Scripts ทั้งหมด →</a>
+        <a href="#channels" class="btn-outline">ช่องทางติดต่อ</a>
+      </div>
+    </div>
+    <div class="hero-visual fade-up fade-up-d2">
+      <div class="hero-card">
+        <div class="hero-card-header">
+          <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
+          <span class="hero-card-title">ryan_script.js</span>
+        </div>
+        <div class="hero-card-body">
+          <div class="code-line"><span class="c-red">const</span> <span class="c-yellow">dev</span> <span class="c-white">= {</span></div>
+          <div class="code-line">&nbsp;&nbsp;<span class="c-green">name</span><span class="c-white">:</span> <span class="c-yellow">"Ryan"</span><span class="c-white">,</span></div>
+          <div class="code-line">&nbsp;&nbsp;<span class="c-green">role</span><span class="c-white">:</span> <span class="c-yellow">"Script Developer"</span><span class="c-white">,</span></div>
+          <div class="code-line">&nbsp;&nbsp;<span class="c-green">skills</span><span class="c-white">: [</span><span class="c-yellow">"JS"</span><span class="c-white">, </span><span class="c-yellow">"Python"</span><span class="c-white">, </span><span class="c-yellow">"Lua"</span><span class="c-white">],</span></div>
+          <div class="code-line">&nbsp;&nbsp;<span class="c-green">scripts</span><span class="c-white">:</span> <span class="c-red" id="codeScriptCount">0</span><span class="c-white">,</span></div>
+          <div class="code-line">&nbsp;&nbsp;<span class="c-green">free</span><span class="c-white">:</span> <span class="c-red">true</span></div>
+          <div class="code-line"><span class="c-white">};</span></div>
+        </div>
+      </div>
+      <div class="channel-links" id="channelLinks"></div>
+    </div>
+  </div>
+</section>
+
+<!-- CHANNELS -->
+<section id="channels" style="background:var(--dark2);padding:80px 24px;">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-tag">// Channels</div>
+      <h2 class="section-title">ช่องทางต่างๆ</h2>
+      <div class="section-line"></div>
+    </div>
+    <div id="channelGrid" class="cat-grid" style="grid-template-columns:repeat(auto-fill,minmax(260px,1fr));"></div>
+  </div>
+</section>
+
+<!-- SCRIPTS -->
+<section id="scripts">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-tag">// Free Scripts</div>
+      <h2 class="section-title">Scripts แจกฟรี</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="cat-grid" id="catGrid"></div>
+    <div class="script-grid" id="scriptGrid"></div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" style="background:var(--dark2);padding:80px 24px;">
+  <div class="section-inner" style="max-width:600px;">
+    <div class="section-header">
+      <div class="section-tag">// Contact</div>
+      <h2 class="section-title">ติดต่อ</h2>
+      <div class="section-line"></div>
+    </div>
+    <div style="color:var(--muted);font-size:0.95rem;line-height:2;" id="contactInfo"></div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer style="background:var(--dark);border-top:1px solid var(--border);padding:24px;text-align:center;">
+  <div style="font-family:'Space Mono',monospace;font-size:0.75rem;color:var(--muted);">
+    © 2025 Ryan. — Script Hub &nbsp;|&nbsp; Built with ❤️
+  </div>
+</footer>
+
+<!-- SCRIPT MODAL -->
+<div class="modal-overlay" id="scriptModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title" id="modalTitle">Script Name</div>
+        <div style="font-family:'Space Mono',monospace;font-size:0.7rem;color:var(--muted);margin-top:4px;" id="modalCat"></div>
+      </div>
+      <button class="modal-close" onclick="closeScriptModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <p style="color:var(--muted);font-size:0.9rem;line-height:1.8;margin-bottom:16px;" id="modalDesc"></p>
+      <div class="tag-list" id="modalTags"></div>
+      <div style="margin-top:20px;position:relative;">
+        <div class="code-block" id="modalCode"></div>
+        <button class="copy-btn" onclick="copyCode()">COPY</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN MODAL -->
+<div class="modal-overlay" id="adminModal">
+  <div class="modal admin-modal">
+    <div class="modal-header">
+      <div class="modal-title">⚙ Admin Panel</div>
+      <button class="modal-close" onclick="closeAdmin()">✕</button>
+    </div>
+    <div class="modal-body" id="adminBody">
+      <!-- Lock screen -->
+      <div class="admin-lock" id="adminLock">
+        <div class="lock-icon">🔐</div>
+        <div class="lock-title">Admin Access</div>
+        <div class="lock-desc">กรอก PIN 4 หลักเพื่อเข้าสู่ Admin Panel</div>
+        <div class="pin-inputs">
+          <input type="password" maxlength="1" class="pin-input" id="p1" oninput="pinNext(this,'p2')">
+          <input type="password" maxlength="1" class="pin-input" id="p2" oninput="pinNext(this,'p3')">
+          <input type="password" maxlength="1" class="pin-input" id="p3" oninput="pinNext(this,'p4')">
+          <input type="password" maxlength="1" class="pin-input" id="p4" oninput="checkPin()">
+        </div>
+        <div class="pin-error" id="pinError"></div>
+        <button class="btn-success" onclick="checkPin()">เข้าสู่ระบบ</button>
+      </div>
+      <!-- Admin Panel -->
+      <div id="adminPanel" style="display:none;">
+        <!-- Add Script -->
+        <div class="admin-section">
+          <div class="admin-section-title">➕ เพิ่ม Script ใหม่</div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">ชื่อ Script</label>
+              <input type="text" class="form-input" id="newScriptName" placeholder="Script Name">
+            </div>
+            <div class="form-group">
+              <label class="form-label">หมวดหมู่</label>
+              <select class="form-select" id="newScriptCat"></select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Badge</label>
+              <select class="form-select" id="newScriptBadge">
+                <option value="free">FREE</option>
+                <option value="hot">HOT</option>
+                <option value="new">NEW</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">ภาษา</label>
+              <input type="text" class="form-input" id="newScriptLang" placeholder="JavaScript">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">คำอธิบาย</label>
+            <input type="text" class="form-input" id="newScriptDesc" placeholder="Description">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Tags (คั่นด้วย , )</label>
+            <input type="text" class="form-input" id="newScriptTags" placeholder="js, automation, bot">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Code</label>
+            <textarea class="form-textarea" id="newScriptCode" placeholder="// วางโค้ดที่นี่..."></textarea>
+          </div>
+          <button class="btn-success" onclick="addScript()" style="width:100%;">เพิ่ม Script</button>
+        </div>
+
+        <!-- Manage Scripts -->
+        <div class="admin-section">
+          <div class="admin-section-title">📋 จัดการ Scripts</div>
+          <div class="script-list-admin" id="adminScriptList"></div>
+        </div>
+
+        <!-- Manage Channels -->
+        <div class="admin-section">
+          <div class="admin-section-title">📡 จัดการ Channels</div>
+          <div class="form-row" style="margin-bottom:12px;">
+            <div class="form-group">
+              <label class="form-label">ชื่อ Channel</label>
+              <input type="text" class="form-input" id="newChName" placeholder="YouTube">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Icon (emoji)</label>
+              <input type="text" class="form-input" id="newChIcon" placeholder="▶️">
+            </div>
+          </div>
+          <div class="form-row" style="margin-bottom:12px;">
+            <div class="form-group">
+              <label class="form-label">URL</label>
+              <input type="text" class="form-input" id="newChUrl" placeholder="https://...">
+            </div>
+            <div class="form-group">
+              <label class="form-label">จำนวน Sub/Follower</label>
+              <input type="text" class="form-input" id="newChSubs" placeholder="1.2K">
+            </div>
+          </div>
+          <button class="btn-success" onclick="addChannel()" style="margin-bottom:12px;">เพิ่ม Channel</button>
+          <div id="adminChList" style="display:flex;flex-direction:column;gap:8px;max-height:160px;overflow-y:auto;"></div>
+        </div>
+
+        <!-- Site Settings -->
+        <div class="admin-section">
+          <div class="admin-section-title">⚙ ตั้งค่าเว็บไซต์</div>
+          <div class="form-group">
+            <label class="form-label">ชื่อเว็บ / ชื่อ Dev</label>
+            <input type="text" class="form-input" id="siteName" placeholder="Ryan">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Contact Info</label>
+            <textarea class="form-textarea" style="min-height:80px;" id="contactText" placeholder="Email: ...\nLine: ..."></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label">เปลี่ยน PIN</label>
+            <input type="password" class="form-input" id="newPin" placeholder="PIN 4 หลัก" maxlength="4">
+          </div>
+          <button class="btn-success" onclick="saveSettings()">บันทึกการตั้งค่า</button>
+        </div>
+
+        <div style="text-align:center;margin-top:16px;">
+          <button class="btn-danger" onclick="logout()">ออกจากระบบ</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EDIT SCRIPT MODAL -->
+<div class="modal-overlay" id="editModal">
+  <div class="modal admin-modal">
+    <div class="modal-header">
+      <div class="modal-title">✏️ แก้ไข Script</div>
+      <button class="modal-close" onclick="closeEdit()">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="editId">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">ชื่อ Script</label>
+          <input type="text" class="form-input" id="editName">
+        </div>
+        <div class="form-group">
+          <label class="form-label">หมวดหมู่</label>
+          <select class="form-select" id="editCat"></select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Badge</label>
+          <select class="form-select" id="editBadge">
+            <option value="free">FREE</option>
+            <option value="hot">HOT</option>
+            <option value="new">NEW</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">ภาษา</label>
+          <input type="text" class="form-input" id="editLang">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">คำอธิบาย</label>
+        <input type="text" class="form-input" id="editDesc">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Tags</label>
+        <input type="text" class="form-input" id="editTags">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Code</label>
+        <textarea class="form-textarea" id="editCode"></textarea>
+      </div>
+      <button class="btn-success" onclick="saveEdit()" style="width:100%;">บันทึก</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ==================== DATA STORE ====================
+const DB_KEY = 'ryandev_db';
+const DEFAULT_PIN = '1234';
+
+function loadDB() {
+  const raw = localStorage.getItem(DB_KEY);
+  if (raw) return JSON.parse(raw);
+  return {
+    pin: DEFAULT_PIN,
+    siteName: 'Ryan',
+    contactInfo: 'Email: ryan@example.com\nLine: @ryan_dev\nDiscord: ryan#0001',
+    channels: [
+      { id:1, name:'YouTube', icon:'▶️', url:'#', subs:'1.2K' },
+      { id:2, name:'TikTok', icon:'🎵', url:'#', subs:'5.4K' },
+      { id:3, name:'GitHub', icon:'💻', url:'#', subs:'320' },
+    ],
+    categories: [
+      { id:1, name:'JavaScript', icon:'⚡', color:'#f4a261' },
+      { id:2, name:'Python', icon:'🐍', color:'#2a9d8f' },
+      { id:3, name:'Lua / Game', icon:'🎮', color:'#e63946' },
+      { id:4, name:'Automation', icon:'🤖', color:'#6a4c93' },
+    ],
+    scripts: [
+      { id:1, name:'Auto Click Bot', catId:1, badge:'hot', lang:'JavaScript', desc:'สคริปต์คลิกอัตโนมัติสำหรับเว็บบราวเซอร์ ใช้งานง่าย แค่รันใน Console', tags:['js','automation','click'], views:412, code:`// Auto Click Bot - by Ryan
+(function() {
+  let interval = null;
+  let count = 0;
+
+  function autoClick() {
+    document.elementFromPoint(
+      window.innerWidth / 2, 
+      window.innerHeight / 2
+    ).click();
+    count++;
+    console.log('Clicked:', count, 'times');
+  }
+
+  // Start
+  interval = setInterval(autoClick, 500);
+  console.log('AutoClick started! Use clearInterval(window.stopBot) to stop');
+  window.stopBot = interval;
+})();` },
+      { id:2, name:'Password Generator', catId:1, badge:'free', lang:'JavaScript', desc:'สร้างรหัสผ่านแบบสุ่มที่แข็งแกร่ง กำหนดความยาวและตัวอักษรได้', tags:['js','security','tool'], views:289, code:`// Password Generator - by Ryan
+function generatePassword(length = 16, options = {}) {
+  const upper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const lower = 'abcdefghijklmnopqrstuvwxyz';
+  const nums = '0123456789';
+  const special = '!@#$%^&*()_+-=[]{}|;:,.<>?';
+
+  let chars = lower;
+  if (options.upper !== false) chars += upper;
+  if (options.numbers !== false) chars += nums;
+  if (options.special) chars += special;
+
+  return Array.from(
+    { length },
+    () => chars[Math.floor(Math.random() * chars.length)]
+  ).join('');
+}
+
+// ตัวอย่างใช้งาน
+console.log(generatePassword(16, { special: true }));
+console.log(generatePassword(8));` },
+      { id:3, name:'File Rename Script', catId:2, badge:'new', lang:'Python', desc:'เปลี่ยนชื่อไฟล์จำนวนมากในโฟลเดอร์ด้วย Python รองรับ pattern และ regex', tags:['python','files','utility'], views:156, code:`# File Rename Script - by Ryan
+import os
+import re
+
+def rename_files(folder, pattern, replacement, dry_run=True):
+    """
+    folder: path to folder
+    pattern: regex pattern to match
+    replacement: new name pattern
+    dry_run: True = preview only, False = actually rename
+    """
+    files = os.listdir(folder)
+    renamed = 0
+    
+    for filename in files:
+        new_name = re.sub(pattern, replacement, filename)
+        if new_name != filename:
+            old_path = os.path.join(folder, filename)
+            new_path = os.path.join(folder, new_name)
+            if dry_run:
+                print(f"[DRY RUN] {filename} → {new_name}")
+            else:
+                os.rename(old_path, new_path)
+                print(f"Renamed: {filename} → {new_name}")
+            renamed += 1
+    
+    print(f"\\nTotal: {renamed} files")
+
+# ตัวอย่างใช้งาน
+rename_files('./my_folder', r'\\s+', '_', dry_run=True)` },
+      { id:4, name:'ESP / Wallhack Basic', catId:3, badge:'hot', lang:'Lua', desc:'สคริปต์ ESP พื้นฐานสำหรับเกม Roblox แสดงตำแหน่งผู้เล่น', tags:['lua','roblox','esp','game'], views:1240, code:`-- ESP Script (Basic) - by Ryan
+-- Roblox LocalScript
+
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local LocalPlayer = Players.LocalPlayer
+
+local ESP_COLOR = Color3.fromRGB(255, 50, 50)
+local boxes = {}
+
+local function createBox(player)
+    local box = Drawing.new("Square")
+    box.Color = ESP_COLOR
+    box.Thickness = 1
+    box.Filled = false
+    box.Visible = false
+    boxes[player] = box
+end
+
+local function updateESP()
+    for _, player in pairs(Players:GetPlayers()) do
+        if player ~= LocalPlayer and player.Character then
+            local hrp = player.Character:FindFirstChild("HumanoidRootPart")
+            if hrp then
+                local pos, onScreen = workspace.CurrentCamera:WorldToViewportPoint(hrp.Position)
+                if boxes[player] then
+                    boxes[player].Visible = onScreen
+                    if onScreen then
+                        boxes[player].Size = Vector2.new(40, 60)
+                        boxes[player].Position = Vector2.new(pos.X - 20, pos.Y - 30)
+                    end
+                end
+            end
+        end
+    end
+end
+
+Players.PlayerAdded:Connect(createBox)
+RunService.RenderStepped:Connect(updateESP)
+print("ESP Loaded!")` },
+    ]
+  };
+}
+
+function saveDB(db) {
+  localStorage.setItem(DB_KEY, JSON.stringify(db));
+}
+
+let db = loadDB();
+let currentCat = null;
+let isAdmin = false;
+
+// ==================== RENDER ====================
+function getNextId(arr) {
+  return arr.length > 0 ? Math.max(...arr.map(x => x.id)) + 1 : 1;
+}
+
+function renderAll() {
+  renderHeroStats();
+  renderChannels();
+  renderCategories();
+  renderScripts();
+  renderContactInfo();
+  document.querySelector('#siteName').value = db.siteName || 'Ryan';
+  document.querySelector('#contactText').value = db.contactInfo || '';
+  populateCatSelects();
+  renderAdminScriptList();
+  renderAdminChList();
+}
+
+function renderHeroStats() {
+  const total = db.scripts.length;
+  document.getElementById('totalScripts').textContent = total + '+';
+  document.getElementById('codeScriptCount').textContent = total;
+
+  // channel links in hero
+  const cl = document.getElementById('channelLinks');
+  cl.innerHTML = db.channels.slice(0,3).map(c => `
+    <a href="${c.url}" class="channel-link" target="_blank">
+      <div class="channel-icon">${c.icon}</div>
+      <div class="channel-info">
+        <div class="channel-name">${c.name}</div>
+        <div class="channel-subs">${c.subs} followers</div>
+      </div>
+      <div class="channel-arrow">→</div>
+    </a>
+  `).join('');
+}
+
+function renderChannels() {
+  const g = document.getElementById('channelGrid');
+  g.innerHTML = db.channels.map(c => `
+    <a href="${c.url}" class="cat-card" target="_blank" style="text-decoration:none;display:block;">
+      <div class="cat-icon">${c.icon}</div>
+      <div class="cat-name">${c.name}</div>
+      <div class="cat-count">${c.subs} followers</div>
+    </a>
+  `).join('');
+}
+
+function renderCategories() {
+  const g = document.getElementById('catGrid');
+  g.innerHTML = `<div class="cat-card ${currentCat===null?'active':''}" onclick="filterCat(null)">
+    <div class="cat-icon">🗂</div>
+    <div class="cat-name">ทั้งหมด</div>
+    <div class="cat-count">${db.scripts.length} scripts</div>
+  </div>` + db.categories.map(c => {
+    const cnt = db.scripts.filter(s => s.catId === c.id).length;
+    return `<div class="cat-card ${currentCat===c.id?'active':''}" onclick="filterCat(${c.id})">
+      <div class="cat-icon">${c.icon}</div>
+      <div class="cat-name">${c.name}</div>
+      <div class="cat-count">${cnt} scripts</div>
+    </div>`;
+  }).join('');
+}
+
+function filterCat(id) {
+  currentCat = id;
+  renderCategories();
+  renderScripts();
+}
+
+function renderScripts() {
+  const g = document.getElementById('scriptGrid');
+  const list = currentCat === null ? db.scripts : db.scripts.filter(s => s.catId === currentCat);
+  if (!list.length) { g.innerHTML = '<p style="color:var(--muted);font-family:\'Space Mono\',monospace;font-size:0.8rem;">ยังไม่มี Scripts ในหมวดนี้</p>'; return; }
+  g.innerHTML = list.map(s => {
+    const cat = db.categories.find(c => c.id === s.catId);
+    return `<div class="script-card" onclick="openScript(${s.id})">
+      <div class="script-card-header">
+        <span class="script-badge badge-${s.badge}">${s.badge.toUpperCase()}</span>
+        <span style="font-size:1.3rem;">${cat ? cat.icon : '📄'}</span>
+      </div>
+      <div class="script-card-body">
+        <div class="script-name">${s.name}</div>
+        <div class="script-desc">${s.desc}</div>
+      </div>
+      <div class="script-footer">
+        <span class="script-lang">${s.lang}</span>
+        <span class="script-views">👁 ${s.views}</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderContactInfo() {
+  const el = document.getElementById('contactInfo');
+  el.innerHTML = (db.contactInfo || '').split('\n').map(l => `<div>${l}</div>`).join('');
+}
+
+function renderAdminScriptList() {
+  const el = document.getElementById('adminScriptList');
+  el.innerHTML = db.scripts.map(s => `
+    <div class="script-list-item">
+      <span class="script-list-item-name">${s.name}</span>
+      <div class="script-list-actions">
+        <button class="icon-btn edit" onclick="openEdit(${s.id})">✏️</button>
+        <button class="icon-btn del" onclick="deleteScript(${s.id})">🗑</button>
+      </div>
+    </div>
+  `).join('') || '<p style="color:var(--muted);font-size:0.8rem;font-family:\'Space Mono\',monospace;">ยังไม่มี scripts</p>';
+}
+
+function renderAdminChList() {
+  const el = document.getElementById('adminChList');
+  el.innerHTML = db.channels.map(c => `
+    <div class="script-list-item">
+      <span class="script-list-item-name">${c.icon} ${c.name} (${c.subs})</span>
+      <button class="icon-btn del" onclick="deleteChannel(${c.id})">🗑</button>
+    </div>
+  `).join('');
+}
+
+function populateCatSelects() {
+  const opts = db.categories.map(c => `<option value="${c.id}">${c.icon} ${c.name}</option>`).join('');
+  ['newScriptCat','editCat'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = opts;
+  });
+}
+
+// ==================== SCRIPT MODAL ====================
+function openScript(id) {
+  const s = db.scripts.find(x => x.id === id);
+  if (!s) return;
+  const cat = db.categories.find(c => c.id === s.catId);
+  document.getElementById('modalTitle').textContent = s.name;
+  document.getElementById('modalCat').textContent = (cat ? cat.icon + ' ' + cat.name : '') + ' • ' + s.lang;
+  document.getElementById('modalDesc').textContent = s.desc;
+  document.getElementById('modalCode').textContent = s.code;
+  document.getElementById('modalTags').innerHTML = (s.tags || []).map(t => `<span class="tag">#${t}</span>`).join('');
+  document.getElementById('scriptModal').classList.add('open');
+  document.body.classList.add('no-scroll');
+  // increment views
+  s.views++;
+  saveDB(db);
+}
+function closeScriptModal() {
+  document.getElementById('scriptModal').classList.remove('open');
+  document.body.classList.remove('no-scroll');
+}
+function copyCode() {
+  const code = document.getElementById('modalCode').textContent;
+  navigator.clipboard.writeText(code).then(() => showToast('✅ คัดลอก Code แล้ว!'));
+}
+
+// ==================== ADMIN ====================
+function openAdmin() {
+  document.getElementById('adminModal').classList.add('open');
+  document.body.classList.add('no-scroll');
+  if (!isAdmin) {
+    document.getElementById('adminLock').style.display = 'flex';
+    document.getElementById('adminPanel').style.display = 'none';
+    ['p1','p2','p3','p4'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('pinError').textContent = '';
+  }
+}
+function closeAdmin() {
+  document.getElementById('adminModal').classList.remove('open');
+  document.body.classList.remove('no-scroll');
+}
+function logout() {
+  isAdmin = false;
+  closeAdmin();
+}
+function pinNext(el, nextId) {
+  if (el.value.length === 1) {
+    const next = document.getElementById(nextId);
+    if (next) next.focus();
+  }
+}
+function checkPin() {
+  const pin = ['p1','p2','p3','p4'].map(id => document.getElementById(id).value).join('');
+  if (pin === db.pin) {
+    isAdmin = true;
+    document.getElementById('adminLock').style.display = 'none';
+    document.getElementById('adminPanel').style.display = 'block';
+    document.getElementById('pinError').textContent = '';
+    renderAdminScriptList();
+    renderAdminChList();
+    populateCatSelects();
+    document.getElementById('siteName').value = db.siteName || '';
+    document.getElementById('contactText').value = db.contactInfo || '';
+  } else {
+    document.getElementById('pinError').textContent = '❌ PIN ไม่ถูกต้อง';
+    ['p1','p2','p3','p4'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('p1').focus();
+  }
+}
+
+// ==================== CRUD SCRIPTS ====================
+function addScript() {
+  const name = document.getElementById('newScriptName').value.trim();
+  const catId = parseInt(document.getElementById('newScriptCat').value);
+  const badge = document.getElementById('newScriptBadge').value;
+  const lang = document.getElementById('newScriptLang').value.trim() || 'Unknown';
+  const desc = document.getElementById('newScriptDesc').value.trim();
+  const tagsRaw = document.getElementById('newScriptTags').value.trim();
+  const code = document.getElementById('newScriptCode').value;
+  if (!name || !code) { showToast('⚠️ กรุณากรอกชื่อและ Code'); return; }
+  const tags = tagsRaw ? tagsRaw.split(',').map(t => t.trim()) : [];
+  db.scripts.push({ id: getNextId(db.scripts), name, catId, badge, lang, desc, tags, views:0, code });
+  saveDB(db);
+  renderAll();
+  ['newScriptName','newScriptDesc','newScriptTags','newScriptCode','newScriptLang'].forEach(id => document.getElementById(id).value = '');
+  showToast('✅ เพิ่ม Script สำเร็จ!');
+}
+
+function deleteScript(id) {
+  if (!confirm('ลบ Script นี้?')) return;
+  db.scripts = db.scripts.filter(s => s.id !== id);
+  saveDB(db);
+  renderAll();
+  showToast('🗑 ลบ Script แล้ว');
+}
+
+function openEdit(id) {
+  const s = db.scripts.find(x => x.id === id);
+  if (!s) return;
+  document.getElementById('editId').value = id;
+  document.getElementById('editName').value = s.name;
+  document.getElementById('editDesc').value = s.desc;
+  document.getElementById('editLang').value = s.lang;
+  document.getElementById('editTags').value = (s.tags || []).join(', ');
+  document.getElementById('editCode').value = s.code;
+  document.getElementById('editBadge').value = s.badge;
+  populateCatSelects();
+  document.getElementById('editCat').value = s.catId;
+  document.getElementById('editModal').classList.add('open');
+}
+function closeEdit() { document.getElementById('editModal').classList.remove('open'); }
+function saveEdit() {
+  const id = parseInt(document.getElementById('editId').value);
+  const s = db.scripts.find(x => x.id === id);
+  if (!s) return;
+  s.name = document.getElementById('editName').value.trim();
+  s.desc = document.getElementById('editDesc').value.trim();
+  s.lang = document.getElementById('editLang').value.trim();
+  s.tags = document.getElementById('editTags').value.split(',').map(t => t.trim());
+  s.code = document.getElementById('editCode').value;
+  s.badge = document.getElementById('editBadge').value;
+  s.catId = parseInt(document.getElementById('editCat').value);
+  saveDB(db);
+  renderAll();
+  closeEdit();
+  showToast('✅ แก้ไข Script สำเร็จ!');
+}
+
+// ==================== CHANNELS ====================
+function addChannel() {
+  const name = document.getElementById('newChName').value.trim();
+  const icon = document.getElementById('newChIcon').value.trim() || '🔗';
+  const url = document.getElementById('newChUrl').value.trim() || '#';
+  const subs = document.getElementById('newChSubs').value.trim() || '0';
+  if (!name) { showToast('⚠️ กรุณากรอกชื่อ Channel'); return; }
+  db.channels.push({ id: getNextId(db.channels), name, icon, url, subs });
+  saveDB(db);
+  renderAll();
+  ['newChName','newChIcon','newChUrl','newChSubs'].forEach(id => document.getElementById(id).value = '');
+  showToast('✅ เพิ่ม Channel สำเร็จ!');
+}
+function deleteChannel(id) {
+  if (!confirm('ลบ Channel นี้?')) return;
+  db.channels = db.channels.filter(c => c.id !== id);
+  saveDB(db);
+  renderAll();
+  showToast('🗑 ลบ Channel แล้ว');
+}
+
+// ==================== SETTINGS ====================
+function saveSettings() {
+  db.siteName = document.getElementById('siteName').value.trim() || 'Ryan';
+  db.contactInfo = document.getElementById('contactText').value;
+  const newPin = document.getElementById('newPin').value.trim();
+  if (newPin && newPin.length === 4 && /^\d+$/.test(newPin)) {
+    db.pin = newPin;
+    document.getElementById('newPin').value = '';
+    showToast('✅ บันทึกการตั้งค่าและ PIN แล้ว');
+  } else {
+    showToast('✅ บันทึกการตั้งค่าแล้ว');
+  }
+  saveDB(db);
+  renderAll();
+  document.querySelector('.logo').innerHTML = db.siteName + '<span>.</span>';
+}
+
+// ==================== UTILS ====================
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+function toggleMenu() {
+  document.getElementById('mobileMenu').classList.toggle('open');
+}
+
+// Close modal on overlay click
+document.getElementById('scriptModal').addEventListener('click', function(e) {
+  if (e.target === this) closeScriptModal();
+});
+document.getElementById('adminModal').addEventListener('click', function(e) {
+  if (e.target === this) closeAdmin();
+});
+document.getElementById('editModal').addEventListener('click', function(e) {
+  if (e.target === this) closeEdit();
+});
+
+// ==================== INIT ====================
+renderAll();
+</script>
+</body>
+</html>
